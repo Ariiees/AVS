@@ -1,0 +1,12 @@
+benchmarker:
+  ros__parameters:
+    db_name: 'lidar_bag' # database name, example for macp file: lidar_bag.macp
+    db_type: 'sqlite3' # database type: sqlite3 or macp
+    recorder_topic_name: 'test/lidar' # the topic name for benchmarker node
+    subscription_topic_name: '/sensing/lidar/top/pointcloud_raw' # topic name for evaluate msg
+    data_type: 'PointCloud2' # data type in sensor_msgs/msg
+    data_freq: 0.1 # data frequency for evalute msg
+    qos_depth: 10 # make sure all qos paramters is same with the topic you want to subscript to (ros2 topic info -v)
+    qos_reliability: reliable  # or 'best_effort'
+    qos_history: keep_last # or 'keep_all'
+    recording_time: 30 # length of time you want to record.
