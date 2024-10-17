@@ -14,9 +14,15 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosbag2_cpp REQUIRED)
+find_package(v2x_msg REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-add_executable(edr src/edr_test.cpp)
-ament_target_dependencies(edr rclcpp std_msgs rosbag2_cpp)
+include_directories(
+  ${v2x_msg_INCLUDE_DIRS}
+)
+
+add_executable(edr src/edr.cpp)
+ament_target_dependencies(edr rclcpp std_msgs rosbag2_cpp sensor_msgs v2x_msg)
 
 install(TARGETS
   edr
