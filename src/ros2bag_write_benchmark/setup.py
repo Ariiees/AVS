@@ -13,7 +13,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/benchmarker_launch.py']),
-        ('share/' + package_name + '/params', ['params/benchmarker_params.yaml']),
+        ('share/' + package_name + '/config', ['config/benchmarker_params.yaml']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

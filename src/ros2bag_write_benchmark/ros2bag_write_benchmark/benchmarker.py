@@ -28,11 +28,11 @@ class Benchmarker(Node):
                 ('recording_time', 30)
             ])
 
-        db_name = 'results/' + self.get_parameter('db_name').get_parameter_value().string_value
+        db_name = self.get_parameter('db_name').get_parameter_value().string_value
         db_type = self.get_parameter('db_type').get_parameter_value().string_value
         recorder_topic_name = self.get_parameter('recorder_topic_name').get_parameter_value().string_value
         data_type = self.get_parameter('data_type').get_parameter_value().string_value
-        subscription_topic_name = self.get_parameter('subscription_topic_name').get_parameter_value().string_value
+        self.subscription_topic_name = self.get_parameter('subscription_topic_name').get_parameter_value().string_value
         self.expected_interval = self.get_parameter('data_freq').get_parameter_value().double_value
         qos_depth = self.get_parameter('qos_depth').get_parameter_value().integer_value
         qos_reliability = self.get_parameter('qos_reliability').get_parameter_value().string_value
@@ -43,7 +43,7 @@ class Benchmarker(Node):
         self.writer = rosbag2_py.SequentialWriter()
 
         storage_options = rosbag2_py._storage.StorageOptions(
-            uri= db_name,
+            uri= 'results/' + db_name,
             storage_id= db_type)
         converter_options = rosbag2_py._storage.ConverterOptions('', '')
         self.writer.open(storage_options, converter_options)
@@ -69,7 +69,7 @@ class Benchmarker(Node):
 
         self.subscription = self.create_subscription(
             message_class,
-            subscription_topic_name,
+            self.subscription_topic_name,
             self.topic_callback,
             qos_profile)
         
@@ -80,9 +80,9 @@ class Benchmarker(Node):
         self.last_msg_time = None
 
         # Open files for recording
-        self.latency_file = open('results/latency_' + db_type + '.txt', 'w')
-        self.throughput_file = open('results/throughput_'+ db_type + '.txt', 'w')
-        self.data_loss_file = open('results/data_loss_' + db_type + '.txt', 'w')
+        self.latency_file = open('results/latency_' + db_type + "_" + db_name + '.txt', 'w')
+        self.throughput_file = open('results/throughput_'+ db_type + "_" + db_name + '.txt', 'w')
+        self.data_loss_file = open('results/data_loss_' + db_type + "_" + db_name + '.txt', 'w')
 
         # Start the 30-second timer
         self.timer_thread = threading.Timer(recording_time, self.stop_recording)
@@ -94,7 +94,7 @@ class Benchmarker(Node):
         
         # write
         self.writer.write(
-            'test/lidar',
+            self.subscription_topic_name,
             serialize_message(msg),
             self.get_clock().now().nanoseconds)
         
