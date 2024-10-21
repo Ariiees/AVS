@@ -30,9 +30,9 @@ class Benchmarker(Node):
 
         db_name = self.get_parameter('db_name').get_parameter_value().string_value
         db_type = self.get_parameter('db_type').get_parameter_value().string_value
-        recorder_topic_name = self.get_parameter('recorder_topic_name').get_parameter_value().string_value
+        self.recorder_topic_name = self.get_parameter('recorder_topic_name').get_parameter_value().string_value
         data_type = self.get_parameter('data_type').get_parameter_value().string_value
-        self.subscription_topic_name = self.get_parameter('subscription_topic_name').get_parameter_value().string_value
+        subscription_topic_name = self.get_parameter('subscription_topic_name').get_parameter_value().string_value
         self.expected_interval = self.get_parameter('data_freq').get_parameter_value().double_value
         qos_depth = self.get_parameter('qos_depth').get_parameter_value().integer_value
         qos_reliability = self.get_parameter('qos_reliability').get_parameter_value().string_value
@@ -49,7 +49,7 @@ class Benchmarker(Node):
         self.writer.open(storage_options, converter_options)
 
         topic_info = rosbag2_py._storage.TopicMetadata(
-            name= recorder_topic_name,
+            name= self.recorder_topic_name,
             type= 'sensor_msgs/msg/' + data_type,
             serialization_format='cdr')
         self.writer.create_topic(topic_info)
@@ -69,7 +69,7 @@ class Benchmarker(Node):
 
         self.subscription = self.create_subscription(
             message_class,
-            self.subscription_topic_name,
+            subscription_topic_name,
             self.topic_callback,
             qos_profile)
         
@@ -80,9 +80,9 @@ class Benchmarker(Node):
         self.last_msg_time = None
 
         # Open files for recording
-        self.latency_file = open('results/latency_' + db_type + "_" + db_name + '.txt', 'w')
-        self.throughput_file = open('results/throughput_'+ db_type + "_" + db_name + '.txt', 'w')
-        self.data_loss_file = open('results/data_loss_' + db_type + "_" + db_name + '.txt', 'w')
+        self.latency_file = open('results/' + db_name +'/latency' + '.txt', 'w')
+        self.throughput_file = open('results/' + db_name + '/throughput' + '.txt', 'w')
+        self.data_loss_file = open('results/' + db_name +'/data_loss''.txt', 'w')
 
         # Start the 30-second timer
         self.timer_thread = threading.Timer(recording_time, self.stop_recording)
@@ -94,7 +94,7 @@ class Benchmarker(Node):
         
         # write
         self.writer.write(
-            self.subscription_topic_name,
+            self.recorder_topic_name,
             serialize_message(msg),
             self.get_clock().now().nanoseconds)
         
@@ -102,7 +102,7 @@ class Benchmarker(Node):
         latency = time.time() - receive_time
         # current_msg_time = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
         # communicate_latency = time.time() - current_msg_time
-        self.get_logger().info(f'Latency: {latency:.6f} seconds')
+        # self.get_logger().info(f'Latency: {latency:.6f} seconds')
         # self.get_logger().info(f'Latency including communication: {communicate_latency:.6f} seconds')
 
         # Data loss
@@ -113,14 +113,14 @@ class Benchmarker(Node):
                 expected_messages = int(actual_interval / self.expected_interval)
                 if expected_messages > 1:
                     self.data_loss = expected_messages - 1
-                    self.get_logger().warn(f'Data loss detected: {self.data_loss} messages lost')
+                    # self.get_logger().warn(f'Data loss detected: {self.data_loss} messages lost')
                     self.data_loss = 0
         self.last_msg_time = current_msg_time
 
         # Throughput
         bytes_written = len(serialize_message(msg)) / 1024
         throughput = bytes_written/latency
-        self.get_logger().info(f'Storing Throughput: {throughput:.2f} bytes/second')
+        # self.get_logger().info(f'Storing Throughput: {throughput:.2f} bytes/second')
 
         # Try to write resulte to .txt
         try:
