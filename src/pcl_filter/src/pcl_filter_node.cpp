@@ -60,7 +60,7 @@ private:
 
         // Convert back to ROS message
         sensor_msgs::msg::PointCloud2 output_msg;
-        pcl::toROSMsg(*sor_filtered_cloud, output_msg);
+        pcl::toROSMsg(*voxel_filtered_cloud, output_msg);
 
         // Publish the filtered point cloud
         point_cloud_pub_->publish(output_msg);
@@ -69,10 +69,9 @@ private:
         auto end_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processing_duration = end_time - start_time;
         processing_time_ = processing_duration.count();  // Store processing time
-        RCLCPP_INFO(this->get_logger(), "%.4f,%lu,%lu", 
+        RCLCPP_INFO(this->get_logger(), "%.4f,%lu", 
             processing_time_, 
-            voxel_filtered_cloud->size(), 
-            sor_filtered_cloud->size());
+            voxel_filtered_cloud->size());
         // Original Points: 230400 points
         // RCLCPP_INFO(this->get_logger(), "Processing Time: %.4f seconds", processing_time_);
         // RCLCPP_INFO(this->get_logger(), "Original Point Cloud Size: %lu points", pcl_cloud->size());
