@@ -4,7 +4,7 @@ This is a ROS2 humble package with CPP and python script to achieve the autonomo
 
 More code will be updated during prototype building.
 
-Current Project is Sponsored by [Western Digital](https://www.westerndigital.com/) in [eCAT Center](https://www.ecat.center/home).
+The current project is sponsored by [Western Digital](https://www.westerndigital.com/) in [eCAT Center](https://www.ecat.center/home).
 
 ## Function
 - **ros2 bag write benchmark:** It benchmarks the ros2 bag stored in MCAP and SQLite write performance, containing the write latency, throughput, and data loss.
@@ -29,7 +29,7 @@ Current Project is Sponsored by [Western Digital](https://www.westerndigital.com
 
   Test: Test with real-time Hesai Pandar 64 lidar point cloud data.
 
-  Results: Drive in Udel STAR Camp with 10 mph, lidar generates 1238 frames, only 169 frames are recorded. Drive around Udel modular lab, lidar generates 999 frames, only 66 frames are recorded. Stay in parkking lot, but other vehicle move around, lidar generates 656 frames, and only 22 key frames are recorded. Vedios are showing [here](https://drive.google.com/drive/folders/1gw72LfTRhE1ekn5KRpBqDVP69j3kucNV?usp=sharing).
+  Results: Drive in Udel STAR Camp with 10 mph, lidar generates 1238 frames, only 169 frames are recorded. Drive around Udel modular lab, lidar generates 999 frames, only 66 frames are recorded. Stay in parkking lot, but other vehicle move around, lidar generates 656 frames, and only 22 key frames are recorded. Videos are showing [here](https://drive.google.com/drive/folders/1gw72LfTRhE1ekn5KRpBqDVP69j3kucNV?usp=sharing).
   
 ## Build
 ### ros2 packages
