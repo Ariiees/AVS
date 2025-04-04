@@ -2,6 +2,10 @@
 
 This is a ROS2 humble package with CPP and python script to achieve the autonomous vehicle storage functionality.
 
+More code will be updated during prototype building.
+
+Current Project is Sponsored by [Western Digital](https://www.westerndigital.com/) in [eCAT Center](https://www.ecat.center/home).
+
 ## Function
 - **ros2 bag write benchmark:** It benchmarks the ros2 bag stored in MCAP and SQLite write performance, containing the write latency, throughput, and data loss.
   
@@ -60,3 +64,7 @@ python visualize.py /home/yuxw/Downloads/data/kitti-odometry/dataset/sequences/0
 cd AVS/src/lidar_frame_deduplicate/script
 python3 frame_deduplicate.py
 ```
+
+## Papers
+1. Quantitative Analysis of Storage Requirement for Autonomous Vehicles ([paper](https://dl.acm.org/doi/10.1145/3655038.3665948))
+2. ONGOING: Computational Storage Prototype Build for Autonomous Vehicles
